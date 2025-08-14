@@ -1,0 +1,9 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build','-t','${_AR_REPO}/rag-frontend:${SHORT_SHA}','-f','samples/Dockerfile.frontend','.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push','${_AR_REPO}/rag-frontend:${SHORT_SHA}']
+substitutions:
+  _AR_REPO: 'us-docker.pkg.dev/$PROJECT_ID/rag/rag'
+images:
+- '${_AR_REPO}/rag-frontend:${SHORT_SHA}'

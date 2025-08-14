@@ -1,0 +1,3 @@
+# Apigee resources disabled - unsupported resource types
+# Move this content back to apigee.tf if you need Apigee integration
+# and update to use supported resource types

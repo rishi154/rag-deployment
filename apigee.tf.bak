@@ -1,0 +1,44 @@
+# Apigee AI Gateway provisioning (best-effort)
+# Note: Apigee organization creation can be slow and may require specific IAM roles.
+# Review Google Cloud Apigee docs and ensure billing/org permissions are available.
+
+resource "google_project_service" "apigee_api" {
+  project = var.project_id
+  service = "apigee.googleapis.com"
+}
+
+resource "google_apigee_organization" "org" {
+  project_id       = var.project_id
+  analytics_region = var.region
+  # Some org fields may require manual steps or extra roles in your GCP org.
+}
+
+resource "google_apigee_environment" "ai_env" {
+  org_id      = google_apigee_organization.org.id
+  name        = "ai-env"
+  description = "AI Gateway Environment"
+}
+
+resource "google_apigee_envgroup" "ai_envgroup" {
+  org_id   = google_apigee_organization.org.id
+  name     = "ai-env-group"
+  hostnames = [var.ai_gateway_hostname]
+}
+
+resource "google_apigee_envgroup_attachment" "ai_env_attach" {
+  envgroup_id = google_apigee_envgroup.ai_envgroup.id
+  environment  = google_apigee_environment.ai_env.name
+}
+
+# Deploy API Proxy bundle (zip bundle under apigee-proxy/apiproxy)
+resource "google_apigee_api_proxy" "vertex_ai_proxy" {
+  org_id = google_apigee_organization.org.id
+  name   = "vertex-ai-gateway"
+  bundle = "${path.module}/apigee-proxy/apiproxy.zip"
+}
+
+resource "google_apigee_deployment" "vertex_ai_deploy" {
+  org_id      = google_apigee_organization.org.id
+  api_proxy   = google_apigee_api_proxy.vertex_ai_proxy.name
+  environment = google_apigee_environment.ai_env.name
+}
