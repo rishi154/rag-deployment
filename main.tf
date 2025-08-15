@@ -32,7 +32,7 @@ module "run_frontend" {
   region        = var.region
   project_id    = var.project_id
   vpc_connector = module.network.vpc_connector_name
-  ingress       = "INGRESS_TRAFFIC_ALL"
+  ingress       = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
   env = {
     REACT_APP_API_BASE = "/api"
   }
