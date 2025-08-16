@@ -28,3 +28,6 @@ max_instances = 50
 
 # Optional: Network Configuration (uncomment to customize)
 # allowed_egress_cidrs = ["0.0.0.0/0"]  # Allow all egress, or specify CIDRs
+
+# Optional: Apigee AI Gateway
+ai_gateway_hostname = "api.your-domain.com"

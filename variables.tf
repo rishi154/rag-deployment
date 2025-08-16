@@ -86,3 +86,9 @@ variable "iap_members" {
   description = "Principals allowed to access via IAP (e.g., user:alice@example.com, group:team@example.com, serviceAccount:svc@proj.iam.gserviceaccount.com)"
   default     = []
 }
+
+variable "ai_gateway_hostname" {
+  type        = string
+  description = "Hostname for Apigee AI Gateway (e.g., api.nvrstech.com)"
+  default     = "api.nvrstech.com"
+}
